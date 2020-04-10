@@ -58,8 +58,23 @@
                                     <form class="form-horizontal" action="#">
 
 
-                                       
-                                       
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-chalkboard-teacher"></i></span>
+                                                    </div>
+                                                   <select class="form-control" id="ddltype">
+                                                       <option value="Stock">Bill</option>
+                                                       <option value="Sales">Sales</option>
+                                                   </select>
+                                                    
+
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                       <br />
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="input-group">
@@ -186,7 +201,7 @@
             var user = {
                 name: $('#logname').val(),
                 pwd: $('#pwd').val(),
-                company_sysid: $('#ddlcompany').val()
+                logintype: $('#ddltype').val()
             }
 
             $.ajax({
