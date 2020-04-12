@@ -574,7 +574,7 @@ function Parameterbindwithviewdata(tablename, uri, data, FilterParameter) {
    
     data[datacount] = eval({
         "data": "sysid", "width": "50px", "render": function (data) {
-            return '<a style="padding:1px;" class="btn btn-icon waves-effect btn-white m-b-5" href="#" onclick="return getdetails(' + data + ')"><i style="color:teal;" class="far fa-eye"></i>  </a>';
+            return '<a style="padding:1px;" class="btn btn-icon waves-effect btn-white m-b-5" href="#" onclick="return getdetails(\'' + data + '\')"><i style="color:teal;" class="far fa-eye"></i>  </a>';
         }
     });
 
