@@ -1,14 +1,18 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $(".dis").attr("disabled", "disabled");
     LoadData();
     closedata()
     Drobdownbindsearch($('#ddlcustomer'), '/Customer/Getcustomerdropdown');
     Drobdownbindsearch($('.ddlspare'), '/ProductMap/Getdropdown_System');
 })
-
 function saveprocess() {
     try {
+
+        if ($('#txtinvoiceno').val() == "0")
+        {
+            toastr.error('invalid invoice no unable to process');
+            return false;
+        }
         var Deatil = [];
        
         $('#detailsTable tbody tr').each(function (index, ele) {
@@ -43,7 +47,7 @@ function saveprocess() {
                     billno: 'sales',
                     type: 'customer',
                     typeid: $('#ddlcustomer').val(),
-                    trans_no: $('#lblbillno').text()
+                    trans_no: $('#txtinvoiceno').val()
                 }
                 Payment.push(detail);
                 total = parseFloat(total) + parseFloat($('.payamount', this).val());
@@ -83,15 +87,21 @@ function saveprocess() {
             description: $('#txtdescription').val(),
             customersysid: $('#ddlcustomer').val(),
             total: $('#txttotal').val(),
-            invoiceno: $('#lblbillno').text(),
+          
             taxtype: $('#ddltaxtype').val(),
             roundoff: $("#txtroundoff").val(),
             roundoff_type: $("#ddlroundoff_type").val(),
             SalesDeatils: Deatil,
             PaymentDetails: Payment
         }
-
-
+        if ($('#hfsysid').val())
+        {
+            data.invoiceno=$('#txtinvoiceno').val()
+        }
+        else
+        {
+            data.invoiceno = 'INV' + $('#txtinvoiceno').val()
+        }
 
         $.ajax({
             url: "/Bill/save",
@@ -102,7 +112,7 @@ function saveprocess() {
             success: function (result) {
                 if (result.Status == true) {
                     toastr.success(result.Message);
-                    var win = window.open('http://localhost:8080/Report/SalesReport/salereport.aspx?sysid=' + result.Id + '&type=il', '_blank');
+                    var win = window.open('http://localhost/Report/SalesReport/salereport.aspx?sysid=' + result.Id + '&type=il', '_blank');
 
                     // LoadData();
                     cleardata();
@@ -125,28 +135,27 @@ function saveprocess() {
         toastr.error(ex);
     }
 }
-
 function getinvoiceno() {
 
     $.ajax({
-        url: '/Bill/GetInvoiceNo',
-       // data: "{ 'billno':"+ $('#txtinvoiceno').val()+"}",
-        dataType: "json",
-        type: "POST",
+         url: '/Bill/GetInvoiceNo',
+         data: "{ 'billno':"+ $('#txtinvoiceno').val()+"}",
+         dataType: "json",
+         type: "POST",
         contentType: "application/json; charset=utf-8",
 
         success: function (res) {
             
-             $("#lblbillno").text("BE"+(parseInt(res.Id)+1))
-            //if(res.Id==0)
-            //{
-            //    toastr.success('invoice no valid')
-            //}
-            //else
-            //{
-            //    toastr.error('invoice no invalid')
-            //    $('#txtinvoiceno').val('0')
-            //}
+            // $("#lblbillno").text("BE"+(parseInt(res.Id)+1))
+            if(res.Id==0)
+            {
+                toastr.success('invoice no valid')
+            }
+            else
+            {
+                toastr.error('invoice no invalid')
+                $('#txtinvoiceno').val('0')
+            }
 
 
 
@@ -178,8 +187,6 @@ function LoadData() {
 
     binddata("#Gvlist", "/Bill/GetList", data);
 }
-
-
 function getbyID(SysId) {
     try {
         $.ajax({
@@ -194,8 +201,8 @@ function getbyID(SysId) {
 
                 $("#hfsysid").val(res.result.sysid);
                 $("#txtentrydate").val(res.result.entrydate);
-                $("#lblbillno").text(res.result.invoiceno)
-              
+               // $("#lblbillno").text(res.result.invoiceno)
+                $('#txtinvoiceno').val(res.result.invoiceno).attr("disabled", "disabled");
                 $('#ddltaxtype').val(res.result.taxtype);
                 $("#txtdescription").val(res.result.description);
                 $("#txttotal").val(res.result.total);
@@ -353,8 +360,6 @@ function getbyID(SysId) {
     }
 
 }
-
-
 function show() {
     cleardata();
     $('.saleslist').toggle('slow');
@@ -362,7 +367,7 @@ function show() {
     var currentTime = new Date();
     $("#txtentrydate").datepicker().datepicker("setDate", currentTime);
     Drobdownbindsearch($('#ddlcustomer'), '/Customer/Getcustomerdropdown');
-    getinvoiceno();
+   // getinvoiceno();
     
 }
 function closedata() {
@@ -373,9 +378,7 @@ function closedata() {
     LoadData()
 
 }
-
 var Gstdetail = [];
-
 function Cal_Amount() {
  
     if ($('#hf_statesysid').val() == 0 || $('#hf_statesysid').val() == '' || $('#hf_statesysid').val() == null || $('#hf_statesysid').val() == undefined)
@@ -675,28 +678,25 @@ function Cal_Amount() {
     $('.gstdetails').append(taxdesign5gst + taxdesign12gst + taxdesign18gst + taxdesign28gst);
 
     if ($('#ddltaxtype').val() == 'Exclusive') {
-        $('#txt_taxable_amout').val(total)
+        $('#txt_taxable_amout').val(parseFloat(total).toFixed(2))
         let sum = total + taxamount5gst + taxamount12gst + taxamount18gst + taxamount28gst;
         $('#txttotal').val(parseFloat(sum).toFixed(2));
     }
     else {
-        $('#txt_taxable_amout').val(total - (taxamount5gst + taxamount12gst + taxamount18gst + taxamount28gst))
+        $('#txt_taxable_amout').val(parseFloat(total - (taxamount5gst + taxamount12gst + taxamount18gst + taxamount28gst)).toFixed(2))
         let sum = total;
         $('#txttotal').val(parseFloat(sum).toFixed(2));
     }
-    
+
     $('#hftotal').val($('#txttotal').val())
-    if($('#hfsysid').val())
-    {
+    if ($('#hfsysid').val()) {
         Cal_Roundoff()
     }
 }
-
 function Delete(ID) {
 
     deletedata(ID, "/Bill/Delete/");
 }
-
 function cleardata() {
 
     $("#detailsTable tbody").find("tr:gt(0)").remove();
@@ -705,7 +705,6 @@ function cleardata() {
     $("#txthsncode").val("");
     $("#txtopeningstock").val("");
     $("#txtdescription").val("");
-    $("#txttotal").val("");
     $("#txttotal").val("");
     $('.gstdetails').empty();
     $("#txtroundoff").val("0");
@@ -726,21 +725,17 @@ function cleardata() {
  
     $('#tblpayment tbody').find("tr:gt()").remove();
     $('#tblpayment tbody tr').each(function (i, e) {
-
-
         $('.payamount', this).val('0');
         $('.description', this).val('');
         $('.hfpaymentid', this).val('');
-
-
     })
    
     $('#txtpayamount').val('0');
     $('#lblbalance').val('0');
-    $('#txt_taxable_amout').val('0');
-    getinvoiceno();
+    $('#txt_taxable_amout').val('');
+    //getinvoiceno();
+    $('#txtinvoiceno').removeAttr("disabled").val("0");
 }
-
 function getsparedetail(ctrl) {
     let url = '';
 
@@ -807,7 +802,6 @@ $("#detailsTable tbody").on('click', '.del', function () {
     $(currentRow).find('.lbldel').attr("style", "display: block;");
     Cal_Amount();
 });
-
 function Add_Rows() {
     var row = $("#detailsTable .trbody").last().clone();
     clears(row);
@@ -841,7 +835,6 @@ function clears(row) {
     $("td input[type=time]", row).val('');
 
 }
-
 function getdropdown(ctrl) {
 
 
@@ -858,7 +851,6 @@ function getdropdown(ctrl) {
     }
 
 }
-
 function Add_paymentRow() {
     var row = $("#tblpayment tbody tr").last().clone();
     clear(row);
@@ -870,15 +862,14 @@ function Add_paymentRow() {
     $('#tblpayment').append(row);
     return false;
 }
-
 function Cal_Balance() {
     let total = 0
 
     $('#tblpayment tbody tr').each(function (i, ele) {
         total = parseFloat(total) + parseFloat($('.payamount', this).val());
     })
-  
    
+
     if (parseFloat($('#txttotal').val() == 'NaN' ? 0 : $('#txttotal').val()) >= parseFloat(total)) {
 
         $('#txtpayamount').val(parseFloat(parseFloat(total) + parseFloat($('#hf_balancepayment').val() == '' ? '0' : $('#hf_balancepayment').val())).toFixed(2))
@@ -918,8 +909,10 @@ function Cal_Roundoff() {
              var parsed = JSON.parse(data);
              if (parsed.length == 1) {
                  $.map(parsed, function (Item) {
+                    
+                     
                      $('#hf_statesysid').val(Item.state);
-                     Cal_Amount()
+                     Cal_Amount();
                  });
              } else {
 

@@ -533,7 +533,7 @@ function Parameterbinddata(tablename, uri, data, FilterParameter) {
     for (i = 0; i < datacount; i++) {
         data[i] = eval({ "data": data[i], "name": data[i], "autoWidth": true });
     }
-   
+  
 
     $(tablename).dataTable().fnDestroy();
 
@@ -567,7 +567,6 @@ function Parameterbinddata(tablename, uri, data, FilterParameter) {
 function Parameterbindwithviewdata(tablename, uri, data, FilterParameter) {
 
     var datacount = data.length;
- 
     for (i = 0; i < datacount; i++) {
         data[i] = eval({ "data": data[i], "name": data[i], "autoWidth": true });
     }

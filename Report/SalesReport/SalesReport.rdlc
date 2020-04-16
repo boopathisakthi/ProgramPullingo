@@ -139,42 +139,12 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox22">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>TAX INVOICE</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox20</rd:DefaultName>
-        <Top>3.86728cm</Top>
-        <Left>16.08314cm</Left>
-        <Height>0.6cm</Height>
-        <Width>3.01717cm</Width>
-        <ZIndex>5</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Line Name="Line4">
         <Top>4.5497cm</Top>
         <Left>0cm</Left>
         <Height>0.01792cm</Height>
         <Width>19.89194cm</Width>
-        <ZIndex>6</ZIndex>
+        <ZIndex>5</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -1066,7 +1036,7 @@
         <Left>0.26214cm</Left>
         <Height>1.81735cm</Height>
         <Width>19.43112cm</Width>
-        <ZIndex>7</ZIndex>
+        <ZIndex>6</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1240,6 +1210,9 @@
             <Height>0.6cm</Height>
             <Width>8.95583cm</Width>
             <ZIndex>5</ZIndex>
+            <Visibility>
+              <Hidden>=IIF(First(Fields!gstin.Value, "DataSet1")="0",true,false)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1392,7 +1365,7 @@
         <Left>0.20922cm</Left>
         <Height>3.84055cm</Height>
         <Width>19.48399cm</Width>
-        <ZIndex>8</ZIndex>
+        <ZIndex>7</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -2080,7 +2053,7 @@
         <Left>0.22683cm</Left>
         <Height>2.39862cm</Height>
         <Width>19.46638cm</Width>
-        <ZIndex>9</ZIndex>
+        <ZIndex>8</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -2358,7 +2331,7 @@
         <Left>0.25746cm</Left>
         <Height>3.65759cm</Height>
         <Width>19.45826cm</Width>
-        <ZIndex>10</ZIndex>
+        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -2434,7 +2407,7 @@
         <Left>0.26214cm</Left>
         <Height>0.73405cm</Height>
         <Width>19.43107cm</Width>
-        <ZIndex>11</ZIndex>
+        <ZIndex>10</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -2446,7 +2419,7 @@
         <Left>0.22683cm</Left>
         <Height>0cm</Height>
         <Width>19.46638cm</Width>
-        <ZIndex>12</ZIndex>
+        <ZIndex>11</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -2558,7 +2531,7 @@
         <Left>0.25259cm</Left>
         <Height>0.95927cm</Height>
         <Width>19.44062cm</Width>
-        <ZIndex>13</ZIndex>
+        <ZIndex>12</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -2573,7 +2546,7 @@
         <Left>5.05037cm</Left>
         <Height>1.30528cm</Height>
         <Width>9.79935cm</Width>
-        <ZIndex>14</ZIndex>
+        <ZIndex>13</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2601,7 +2574,7 @@
         <Left>4.73287cm</Left>
         <Height>0.6cm</Height>
         <Width>10.84319cm</Width>
-        <ZIndex>15</ZIndex>
+        <ZIndex>14</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
